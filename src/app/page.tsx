@@ -6,6 +6,8 @@ interface Review {
   id: string;
   content: string;
   created_at: number;
+  tee_hash: string | null;
+  tee_signature: string | null;
 }
 
 export default function Home() {
@@ -14,6 +16,7 @@ export default function Home() {
   const [reviews, setReviews] = useState<Review[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
+  const [expandedAttestation, setExpandedAttestation] = useState<string | null>(null);
 
   useEffect(() => {
     fetchReviews();
@@ -204,22 +207,66 @@ export default function Home() {
                     <p className="text-zinc-600 text-sm mt-1">Be the first to drop something</p>
                   </div>
                 ) : (
-                  reviews.map((review, i) => (
+                  reviews.map((review) => (
                     <div
                       key={review.id}
                       className="group p-5 rounded-2xl bg-zinc-900/50 border border-zinc-800/50 hover:border-zinc-700/50 transition-colors"
                     >
                       <p className="text-zinc-200 leading-relaxed whitespace-pre-wrap">{review.content}</p>
-                      <div className="mt-4 flex items-center gap-3">
-                        <div className="flex items-center gap-2">
-                          <div className="w-6 h-6 rounded-full bg-gradient-to-br from-zinc-700 to-zinc-800 flex items-center justify-center">
-                            <span className="text-xs text-zinc-400">?</span>
+                      <div className="mt-4 flex items-center justify-between">
+                        <div className="flex items-center gap-3">
+                          <div className="flex items-center gap-2">
+                            <div className="w-6 h-6 rounded-full bg-gradient-to-br from-zinc-700 to-zinc-800 flex items-center justify-center">
+                              <span className="text-xs text-zinc-400">?</span>
+                            </div>
+                            <span className="text-xs text-zinc-600">Anonymous</span>
                           </div>
-                          <span className="text-xs text-zinc-600">Anonymous</span>
+                          <span className="text-zinc-800">·</span>
+                          <span className="text-xs text-zinc-600">{timeAgo(review.created_at)}</span>
                         </div>
-                        <span className="text-zinc-800">·</span>
-                        <span className="text-xs text-zinc-600">{timeAgo(review.created_at)}</span>
+                        {review.tee_signature && (
+                          <button
+                            onClick={() => setExpandedAttestation(expandedAttestation === review.id ? null : review.id)}
+                            className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs hover:bg-emerald-500/20 transition-colors"
+                          >
+                            <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                            </svg>
+                            TEE Verified
+                          </button>
+                        )}
                       </div>
+
+                      {expandedAttestation === review.id && review.tee_hash && (
+                        <div className="mt-4 p-4 rounded-xl bg-zinc-800/50 border border-zinc-700/50 space-y-3">
+                          <div>
+                            <p className="text-xs text-zinc-500 mb-1">Message (Hash)</p>
+                            <p className="text-xs font-mono text-zinc-300 break-all">{review.tee_hash}</p>
+                          </div>
+                          {review.tee_signature && review.tee_signature !== 'TEE_VERIFIED' && (
+                            <div>
+                              <p className="text-xs text-zinc-500 mb-1">Signature</p>
+                              <p className="text-xs font-mono text-zinc-300 break-all">{review.tee_signature}</p>
+                            </div>
+                          )}
+                          <p className="text-xs text-zinc-400">
+                            {review.tee_signature && review.tee_signature !== 'TEE_VERIFIED'
+                              ? 'Copy the hash and signature to verify on EigenCompute dashboard.'
+                              : 'This review was processed inside a hardware-secured TEE.'}
+                          </p>
+                          <a
+                            href="https://verify-sepolia.eigencloud.xyz/app/0xcaD70c29449055E52814f6031448e5Fd26BdFbcd"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-1.5 text-xs text-cyan-400 hover:text-cyan-300"
+                          >
+                            Verify on EigenCompute
+                            <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                            </svg>
+                          </a>
+                        </div>
+                      )}
                     </div>
                   ))
                 )}

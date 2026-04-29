@@ -21,7 +21,9 @@ export function getDb(): Database.Database {
         id TEXT PRIMARY KEY,
         content TEXT NOT NULL,
         created_at INTEGER NOT NULL,
-        status TEXT DEFAULT 'pending'
+        status TEXT DEFAULT 'pending',
+        tee_hash TEXT,
+        tee_signature TEXT
       )
     `);
   }
@@ -33,13 +35,22 @@ export interface Review {
   content: string;
   created_at: number;
   status: 'pending' | 'approved' | 'rejected';
+  tee_hash: string | null;
+  tee_signature: string | null;
 }
 
-export function createReview(id: string, content: string): Review {
+export function createReview(
+  id: string,
+  content: string,
+  teeHash: string | null = null,
+  teeSignature: string | null = null
+): Review {
   const db = getDb();
   const created_at = Date.now();
-  db.prepare('INSERT INTO reviews (id, content, created_at, status) VALUES (?, ?, ?, ?)').run(id, content, created_at, 'approved');
-  return { id, content, created_at, status: 'approved' };
+  db.prepare(
+    'INSERT INTO reviews (id, content, created_at, status, tee_hash, tee_signature) VALUES (?, ?, ?, ?, ?, ?)'
+  ).run(id, content, created_at, 'approved', teeHash, teeSignature);
+  return { id, content, created_at, status: 'approved', tee_hash: teeHash, tee_signature: teeSignature };
 }
 
 export function getApprovedReviews(): Review[] {
