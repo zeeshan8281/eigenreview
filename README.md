@@ -41,33 +41,7 @@ This isn't "we promise not to look" — it's "we mathematically cannot look."
 
 ## Architecture
 
-```
-┌─────────────────────────────────────────────────────────────────┐
-│                         User's Browser                          │
-│                    (No cookies, no tracking)                    │
-└─────────────────────────────────┬───────────────────────────────┘
-                                  │ HTTPS
-                                  ▼
-┌─────────────────────────────────────────────────────────────────┐
-│                     EigenCompute TEE Instance                   │
-│  ┌───────────────────────────────────────────────────────────┐  │
-│  │                    SEV-SNP Secure Enclave                 │  │
-│  │  ┌─────────────────┐    ┌─────────────────────────────┐   │  │
-│  │  │   Next.js App   │───▶│   SQLite Database           │   │  │
-│  │  │   (Port 3000)   │    │   /app/data/reviews.db      │   │  │
-│  │  └─────────────────┘    └─────────────────────────────┘   │  │
-│  │           │                                               │  │
-│  │           ▼                                               │  │
-│  │  ┌─────────────────────────────────────────────────────┐  │  │
-│  │  │              KMS Client (Attestation)               │  │  │
-│  │  │         /usr/local/bin/kms-client                   │  │  │
-│  │  └─────────────────────────────────────────────────────┘  │  │
-│  └───────────────────────────────────────────────────────────┘  │
-│                                                                 │
-│  Memory encrypted by AMD SEV-SNP hardware                       │
-│  Attestation verifiable at verify-sepolia.eigencloud.xyz        │
-└─────────────────────────────────────────────────────────────────┘
-```
+![Vault Architecture](docs/architecture.png)
 
 ### Key Components
 
@@ -83,50 +57,7 @@ This isn't "we promise not to look" — it's "we mathematically cannot look."
 
 ## App Flow
 
-```
-┌──────────────┐     ┌──────────────┐     ┌──────────────┐
-│    User      │     │   Vault UI   │     │   TEE API    │
-│   Browser    │     │  (React)     │     │  (Next.js)   │
-└──────┬───────┘     └──────┬───────┘     └──────┬───────┘
-       │                    │                    │
-       │  1. Visit site     │                    │
-       │───────────────────▶│                    │
-       │                    │                    │
-       │  2. Render form    │                    │
-       │◀───────────────────│                    │
-       │                    │                    │
-       │  3. Type review    │                    │
-       │───────────────────▶│                    │
-       │                    │                    │
-       │  4. Click "Drop it"│                    │
-       │───────────────────▶│                    │
-       │                    │  5. POST /api/reviews
-       │                    │───────────────────▶│
-       │                    │                    │
-       │                    │                    │ 6. Generate UUID
-       │                    │                    │    (no user data)
-       │                    │                    │
-       │                    │                    │ 7. Insert to SQLite
-       │                    │                    │    (content + timestamp only)
-       │                    │                    │
-       │                    │  8. Return success │
-       │                    │◀───────────────────│
-       │                    │                    │
-       │  9. Show success   │                    │
-       │◀───────────────────│                    │
-       │                    │                    │
-       │  10. View "The Wall"                    │
-       │───────────────────▶│                    │
-       │                    │  11. GET /api/reviews
-       │                    │───────────────────▶│
-       │                    │                    │
-       │                    │  12. Return reviews│
-       │                    │◀───────────────────│
-       │                    │                    │
-       │  13. Display reviews                    │
-       │◀───────────────────│                    │
-       │                    │                    │
-```
+![Vault App Flow](docs/app-flow.png)
 
 ### What Gets Stored
 
