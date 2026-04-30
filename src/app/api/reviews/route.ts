@@ -3,9 +3,19 @@ import { createReview, getApprovedReviews } from '@/lib/db';
 import { createTeeProof } from '@/lib/tee-signer';
 import { v4 as uuidv4 } from 'uuid';
 
+const corsHeaders = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+  'Access-Control-Allow-Headers': 'Content-Type',
+};
+
+export async function OPTIONS() {
+  return NextResponse.json({}, { headers: corsHeaders });
+}
+
 export async function GET() {
   const reviews = getApprovedReviews();
-  return NextResponse.json({ reviews });
+  return NextResponse.json({ reviews }, { headers: corsHeaders });
 }
 
 export async function POST(request: NextRequest) {
@@ -36,5 +46,5 @@ export async function POST(request: NextRequest) {
       processedInTee,
       verifyAt: 'https://verify-sepolia.eigencloud.xyz/app/0xc286bE71ce983ec0F674b641e71f2F92C256aeb6'
     }
-  }, { status: 201 });
+  }, { status: 201, headers: corsHeaders });
 }

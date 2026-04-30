@@ -36,8 +36,10 @@ export default function Home() {
     fetchReviews();
   }, []);
 
+  const API_URL = process.env.NEXT_PUBLIC_API_URL || '';
+
   async function fetchReviews() {
-    const res = await fetch('/api/reviews');
+    const res = await fetch(`${API_URL}/api/reviews`);
     const data = await res.json();
     setReviews(data.reviews);
   }
@@ -48,7 +50,7 @@ export default function Home() {
 
     setIsSubmitting(true);
     try {
-      const res = await fetch('/api/reviews', {
+      const res = await fetch(`${API_URL}/api/reviews`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ content: content.trim() }),
