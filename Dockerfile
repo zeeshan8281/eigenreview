@@ -5,6 +5,7 @@ RUN apk add --no-cache libc6-compat python3 make g++
 WORKDIR /app
 
 COPY package.json package-lock.json ./
+COPY packages ./packages
 RUN npm ci
 
 FROM base AS builder
