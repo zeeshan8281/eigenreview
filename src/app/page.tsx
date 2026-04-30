@@ -238,7 +238,7 @@ export default function Home() {
                           </p>
                           <Button variant="link" size="sm" asChild className="p-0 h-auto">
                             <a
-                              href="https://verify-sepolia.eigencloud.xyz/app/0xcaD70c29449055E52814f6031448e5Fd26BdFbcd"
+                              href="https://verify-sepolia.eigencloud.xyz/app/0xc286bE71ce983ec0F674b641e71f2F92C256aeb6"
                               target="_blank"
                               rel="noopener noreferrer"
                             >
@@ -261,7 +261,7 @@ export default function Home() {
         <div className="max-w-3xl mx-auto px-6 flex items-center justify-between text-sm text-muted-foreground">
           <p>Powered by EigenCompute TEE</p>
           <a
-            href="https://verify-sepolia.eigencloud.xyz/app/0xcaD70c29449055E52814f6031448e5Fd26BdFbcd"
+            href="https://verify-sepolia.eigencloud.xyz/app/0xc286bE71ce983ec0F674b641e71f2F92C256aeb6"
             target="_blank"
             rel="noopener noreferrer"
             className="hover:text-foreground transition-colors"
