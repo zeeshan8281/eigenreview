@@ -4,9 +4,13 @@ Anonymous feedback tool powered by EigenCompute TEE (Trusted Execution Environme
 
 ## Features
 
-- Anonymous review submission with cryptographic privacy
+- Anonymous review submission (no identity collected)
 - TEE-signed reviews with verifiable signatures
-- Hardware-level privacy using AMD SEV-SNP
+- Privacy protections:
+  - Timestamps coarsened to hour precision
+  - Random submission delays (1-5s) to break timing correlation
+  - Global rate limiting (not per-IP)
+  - No IP logging in application layer
 - Dark mode support
 
 ## Live Deployments

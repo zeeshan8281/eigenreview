@@ -2,6 +2,25 @@ import { NextRequest, NextResponse } from 'next/server';
 
 const BACKEND_URL = process.env.BACKEND_URL;
 
+const RATE_LIMIT_WINDOW_MS = 60 * 1000;
+const RATE_LIMIT_MAX = 10;
+let requestTimestamps: number[] = [];
+
+function checkGlobalRateLimit(): boolean {
+  const now = Date.now();
+  requestTimestamps = requestTimestamps.filter(t => now - t < RATE_LIMIT_WINDOW_MS);
+  if (requestTimestamps.length >= RATE_LIMIT_MAX) {
+    return false;
+  }
+  requestTimestamps.push(now);
+  return true;
+}
+
+function randomDelay(): Promise<void> {
+  const delay = 1000 + Math.random() * 4000;
+  return new Promise(resolve => setTimeout(resolve, delay));
+}
+
 export async function GET() {
   if (BACKEND_URL) {
     const res = await fetch(`${BACKEND_URL}/api/reviews`);
@@ -15,13 +34,22 @@ export async function GET() {
 }
 
 export async function POST(request: NextRequest) {
+  if (!checkGlobalRateLimit()) {
+    return NextResponse.json(
+      { error: 'Too many submissions. Please wait a moment.' },
+      { status: 429 }
+    );
+  }
+
+  await randomDelay();
+
   const body = await request.json();
 
   if (BACKEND_URL) {
     const res = await fetch(`${BACKEND_URL}/api/reviews`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(body),
+      body: JSON.stringify({ content: body.content }),
     });
     const data = await res.json();
     return NextResponse.json(data, { status: res.status });

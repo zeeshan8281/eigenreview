@@ -39,6 +39,11 @@ export interface Review {
   tee_signature: string | null;
 }
 
+function coarsenTimestamp(ms: number): number {
+  const HOUR_MS = 60 * 60 * 1000;
+  return Math.floor(ms / HOUR_MS) * HOUR_MS;
+}
+
 export function createReview(
   id: string,
   content: string,
@@ -46,7 +51,7 @@ export function createReview(
   teeSignature: string | null = null
 ): Review {
   const db = getDb();
-  const created_at = Date.now();
+  const created_at = coarsenTimestamp(Date.now());
   db.prepare(
     'INSERT INTO reviews (id, content, created_at, status, tee_hash, tee_signature) VALUES (?, ?, ?, ?, ?, ?)'
   ).run(id, content, created_at, 'approved', teeHash, teeSignature);

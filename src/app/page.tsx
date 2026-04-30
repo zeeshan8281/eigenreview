@@ -178,7 +178,7 @@ export default function Home() {
                       </p>
 
                       <Button type="submit" disabled={!content.trim() || isSubmitting}>
-                        {isSubmitting ? 'Dropping...' : 'Drop it'}
+                        {isSubmitting ? 'Anonymizing...' : 'Drop it'}
                       </Button>
                     </div>
                   </form>
@@ -197,8 +197,7 @@ export default function Home() {
                 </CardHeader>
                 <CardContent>
                   <p className="text-sm text-muted-foreground">
-                    This runs inside a Trusted Execution Environment on EigenCompute. Your identity is cryptographically sealed —
-                    not even the server admins can see who you are. It's not trust, it's math.
+                    We don't collect your identity. Timestamps are coarsened to the hour, submissions are randomly delayed to break timing correlation, and no IP addresses are logged. The TEE signs each review to prove it was processed in secure hardware.
                   </p>
                 </CardContent>
               </Card>
