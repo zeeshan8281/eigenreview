@@ -3,8 +3,12 @@ import { existsSync } from 'fs';
 import { signMessage, mnemonicToAccount } from 'viem/accounts';
 import { Hex } from 'viem';
 
+// MNEMONIC is only injected via the KMS-sourced env file at TEE boot, so its presence
+// is a sufficient TEE signal. The image-ref layered build also installs a public key
+// at /usr/local/bin/kms-signing-public-key.pem; verifiable builds don't, so we fall
+// back to the env check.
 const KMS_KEY_PATH = '/usr/local/bin/kms-signing-public-key.pem';
-const IS_TEE = existsSync(KMS_KEY_PATH);
+const IS_TEE = existsSync(KMS_KEY_PATH) || !!process.env.MNEMONIC;
 
 export interface TeeProof {
   hash: string;
