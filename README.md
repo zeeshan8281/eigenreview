@@ -16,8 +16,8 @@ Anonymous feedback tool powered by EigenCompute TEE (Trusted Execution Environme
 ## Live Deployments
 
 - **Vercel (Frontend):** https://eigen-anon-review.vercel.app
-- **EigenCompute (TEE Backend):** http://34.67.91.214:3000
-- **Verification Dashboard:** https://verify-sepolia.eigencloud.xyz/app/0xc286bE71ce983ec0F674b641e71f2F92C256aeb6
+- **EigenCompute (TEE Backend):** http://34.7.148.56:3000
+- **Verification Dashboard:** https://verify-sepolia.eigencloud.xyz/app/0xD9D92CB87DCc38e99500568C97EDE665e94e1013
 
 ## Tech Stack
 

@@ -81,7 +81,7 @@ export async function POST(request: NextRequest) {
       signature,
       signerAddress,
       processedInTee,
-      verifyAt: 'https://verify-sepolia.eigencloud.xyz/app/0xc286bE71ce983ec0F674b641e71f2F92C256aeb6'
+      verifyAt: 'https://verify-sepolia.eigencloud.xyz/app/0xD9D92CB87DCc38e99500568C97EDE665e94e1013'
     }
   }, { status: 201 });
 }

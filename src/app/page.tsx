@@ -449,13 +449,32 @@ export default function Home() {
                         <svg className="w-5 h-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                         </svg>
-                        Hardware-level privacy
+                        Why you can trust this
                       </CardTitle>
                     </CardHeader>
-                    <CardContent>
+                    <CardContent className="space-y-3">
                       <p className="text-sm text-muted-foreground">
-                        Think of it like dropping a note into a locked box that nobody — not even us — can open. Your message goes into tamper-proof hardware, gets stripped of any identifying info, and comes out with a seal proving it was handled anonymously.
+                        Privacy here rests on three pieces. <strong className="text-foreground">Hardware trust</strong> — AMD SEV-SNP encrypts the machine&apos;s memory so even the cloud operator can&apos;t read it. <strong className="text-foreground">Build trust</strong> — the verifiable build proves the binary inside the TEE is built from the open source code. <strong className="text-foreground">Code trust</strong> — that audited code is what handles your note, so it can see your data but can&apos;t leak it.
                       </p>
+                      <div className="flex items-center gap-3 flex-wrap pt-1">
+                        <Button variant="outline" size="xs" asChild>
+                          <a
+                            href="https://verify-sepolia.eigencloud.xyz/app/0xD9D92CB87DCc38e99500568C97EDE665e94e1013"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            Check the TEE attestation →
+                          </a>
+                        </Button>
+                        <a
+                          href="https://github.com/zeeshan8281/eigenreview"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-[11px] text-muted-foreground underline hover:text-foreground transition-colors"
+                        >
+                          Read the source
+                        </a>
+                      </div>
                     </CardContent>
                   </Card>
                 </>
@@ -518,7 +537,7 @@ export default function Home() {
                             <div className="flex-1 min-w-0">
                               <h4 className="font-medium text-sm mb-1">Anonymity Certificate</h4>
                               <p className="text-xs text-muted-foreground mb-3">
-                                This note was processed in tamper-proof hardware. The seal below proves it wasn't modified and no identity was attached.
+                                Privacy here rests on three pieces working together. <strong className="text-foreground">Hardware trust:</strong> AMD SEV-SNP encrypts this machine&apos;s memory, so even the cloud operator can&apos;t read it. <strong className="text-foreground">Build trust:</strong> the verifiable build proves the binary running inside is built from the open source code below. <strong className="text-foreground">Code trust:</strong> that audited code is what handles your note — so it has access to your data but can&apos;t leak it.
                               </p>
 
                               <div className="space-y-2 bg-background/50 rounded p-3">
@@ -534,18 +553,30 @@ export default function Home() {
                                 )}
                               </div>
 
-                              <div className="mt-3 flex items-center gap-3">
+                              <div className="mt-3 flex items-center gap-3 flex-wrap">
                                 <Button variant="outline" size="xs" asChild>
                                   <a
-                                    href="https://verify-sepolia.eigencloud.xyz/app/0xc286bE71ce983ec0F674b641e71f2F92C256aeb6"
+                                    href="https://verify-sepolia.eigencloud.xyz/app/0xD9D92CB87DCc38e99500568C97EDE665e94e1013"
                                     target="_blank"
                                     rel="noopener noreferrer"
                                   >
-                                    Verify this proof →
+                                    Check the TEE attestation →
                                   </a>
                                 </Button>
-                                <span className="text-[10px] text-muted-foreground">Independent verification</span>
+                                <span className="text-[10px] text-muted-foreground">Proves a genuine TEE signed this</span>
                               </div>
+
+                              <p className="mt-3 text-[10px] text-muted-foreground">
+                                <a
+                                  href="https://github.com/zeeshan8281/eigenreview"
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="underline hover:text-foreground transition-colors"
+                                >
+                                  Read the source code
+                                </a>{' '}
+                                — the exact code running inside the TEE.
+                              </p>
                             </div>
                           </div>
                         </div>
@@ -571,12 +602,20 @@ export default function Home() {
               How it works
             </button>
             <a
-              href="https://verify-sepolia.eigencloud.xyz/app/0xc286bE71ce983ec0F674b641e71f2F92C256aeb6"
+              href="https://verify-sepolia.eigencloud.xyz/app/0xD9D92CB87DCc38e99500568C97EDE665e94e1013"
               target="_blank"
               rel="noopener noreferrer"
               className="hover:text-foreground transition-colors"
             >
               Verify attestation
+            </a>
+            <a
+              href="https://github.com/zeeshan8281/eigenreview"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-foreground transition-colors"
+            >
+              Source
             </a>
           </div>
         </div>
